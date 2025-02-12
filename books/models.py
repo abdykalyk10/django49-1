@@ -17,6 +17,7 @@ class BookModel(models.Model):
                       verbose_name='выберите жаныр')
     email = EmailField(max_length=100,verbose_name='укажите почту')
     director = models.CharField(max_length=100, default='Иванов Иван')
+    music = models.FileField(upload_to='music/', verbose_name='загрузите музыку', null=True, blank=True)
     audio = models.URLField(verbose_name='укажите ссылку из YOUTUBE')
 
     def __str__(self):
@@ -26,3 +27,20 @@ class BookModel(models.Model):
     class Meta:
         verbose_name = 'книга'
         verbose_name_plural = 'книги'
+
+class Review(models.Model):
+    STARS = (
+        ('🌟', '🌟'),
+        ('🌟🌟', '🌟🌟'),
+        ('🌟🌟🌟', '🌟🌟🌟'),
+        ('🌟🌟🌟🌟', '🌟🌟🌟🌟'),
+        ('🌟🌟🌟🌟🌟', '🌟🌟🌟🌟🌟'),
+    )
+    choice_book = models.ForeignKey(BookModel, on_delete=models.CASCADE,
+                                    related_name='choice_book')
+    created_at = models.DateField(auto_now_add=True)
+
+    text_review = models.TextField(default='Крутой фильм')
+    stars = models.CharField(max_length=10, choices=STARS, default='🌟🌟🌟')
+    def __str__(self):
+        return f'{self.stars}--{self.choice_book.title}'

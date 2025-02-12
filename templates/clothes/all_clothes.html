@@ -1,0 +1,20 @@
+{% load static %}
+{% include 'components/header.html' %}
+<link rel="stylesheet" href="{% static 'css/heshtags.css' %}">
+
+
+<div class="container">
+    <div class="buttons">
+        <button class="btn"><a href="{% url 'baby_clothes' %}">Детская</a></button>
+        <button class="btn"><a href="{% url 'teen_clothes' %}">Подростковая</a></button>
+        <button class="btn"><a href="{% url 'adult_clothing' %}">Взрослая</a></button>
+    </div>
+    {% for i in all_clothes %}
+        <div class="content">
+            <hr class="white">
+            <p>{{ i.title }}</p>
+            <p>{{ i.price }}</p>
+        </div>
+    {% endfor %}
+</div>
+{% include 'components/footer.html' %}

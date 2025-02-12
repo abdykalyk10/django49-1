@@ -1,0 +1,17 @@
+{% load static %}
+{% include 'components/header.html' %}
+<link rel="stylesheet" href="{% static 'css/heshtags.css' %}">
+
+
+<div class="container">
+
+    {% for i in teenage %}
+        <div class="content">
+            <hr class="white">
+            <p>{{ i.title }}</p>
+            <p>{{ i.price }}</p>
+
+        </div>
+    {% endfor %}
+</div>
+{% include 'components/footer.html' %}
