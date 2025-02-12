@@ -39,7 +39,7 @@ def teen_clothes(request):
 
 def adult_clothes(request):
     if request.method == "GET":
-        query = models.Clothes.objects.filter(clothing_category__name='Взрослая').order_by('-id')
+        query = models.Clothes.objects.filter(clothing_category__name='Врослая').order_by('-id')
         context_object_name = {
             'adult': query
         }
