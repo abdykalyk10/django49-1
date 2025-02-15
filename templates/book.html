@@ -10,7 +10,9 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ i.title }}</h5>
                     <p class="card-text">{{ i.created_at }}</p>
+
                     <a href="/book_detail/{{ i.id }}/" class="btn btn-primary">Подробнее</a>
+                    <a href="{% url 'create_order' %}" class="btn btn-primary">В карзину</a>
                 </div>
             </div>
         </div>

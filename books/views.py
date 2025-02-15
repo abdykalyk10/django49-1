@@ -2,8 +2,8 @@ import datetime
 from datetime import datetime
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
-
-from . import models
+from django.shortcuts import redirect
+from . import models, forms
 
 # book_list
 def book_list_view(request):
@@ -19,14 +19,23 @@ def book_list_view(request):
 #book detail
 def book_detail_view(request, id):
     if request.method == "GET":
+        form = forms.ReviwForm()
         query = get_object_or_404(models.BookModel, id=id)
         context_object_name = {
-            'book_id':query
+            'book_id':query,
+            'form':form
         }
         return render(request, template_name='book_detail.html',
                       context=context_object_name)
-
-
+    elif request.method == "POST":
+        form = forms.ReviwForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.choice_book = get_object_or_404(models.BookModel, id=id)
+            review.save()
+            return redirect ('book_detail', id=id)
+        else:
+            return HttpResponse("Форма не валидна")
 
 
 

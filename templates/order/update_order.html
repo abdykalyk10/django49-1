@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Сизменить заказа</title>
+</head>
+<body>
+
+<h1>изменить заказ</h1>
+
+<form method="POST" action="{% url 'create_order' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">изменить</button>
+    <button type="reset">Очистить</button>
+</form>
+
+</body>
+</html>
