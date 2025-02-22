@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Машины с сайта <a href="https://m.mashina.kg/search/all/?region=all">https://m.mashina.kg/search/all/?region=all</a></h1>
+<ul>
+    {% for i in car %}
+    <li>
+  <li>{{ i.title }} / {{ i.price }} / {{ i.city }} / Лайков: {{ i.like }} / Просмотров: {{ i.counters }}</li>
+    </li>
+    {% endfor %}
+</ul>
+
+</body>
+</html>

@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'books',
     'clothes',
     'order',
+    'parser_app'
 ]
 
 MIDDLEWARE = [
