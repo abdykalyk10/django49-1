@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Добро пожаловать</title>
+</head>
+<body>
+<h1>Добро пожаловать</h1>
+<ol>
+    {% for i in person %}
+    <li>
+        <p>Имя:{{ i.username }}</p>
+        <p>Возрост:{{ i.age }}</p>
+        <p>Страж работы:{{ i.work_years }}</p>
+        <p>Заплата: {{ i.salary }}</p>
+    </li>
+    {% endfor %}
+</ol>
+
+<form action="{% url 'work_age:login' %}" method="POST">
+    {% csrf_token %}
+    <button type="submit">Выйти из аккаунта</button>
+</form>
+</body>
+</html>
