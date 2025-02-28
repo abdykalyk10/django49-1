@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!-- recipe_detail.html -->
+<h1>{{ recipe.title }}</h1>
+<p>{{ recipe.description }}</p>
+
+
+<ul>
+    {% for ingredient in ingredients %}
+        <li>{{ ingredient.name }} - {{ ingredient.quantity }}</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'recipe_list' %}">Назад </a>
+
+</body>
+</html>

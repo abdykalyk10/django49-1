@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<h1>Рецепты</h1>
+<ul>
+    {% for recipe in recipes %}
+        <li>
+            {{ recipe.title }} -
+            <a href="{% url 'recipe_detail' recipe.pk %}">Просмотреть</a>
+            <a href="{% url 'recipe_delete' recipe.pk %}">Удалить</a>
+        </li>
+    {% endfor %}
+</ul>
+<a href="{% url 'recipe_add' %}">Добавить новый рецепт</a>
+
+</body>
+</html>

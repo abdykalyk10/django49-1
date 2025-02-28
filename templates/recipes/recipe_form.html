@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!-- recipe_form.html -->
+<h1>Добавить новый рецепт</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Добавить рецепт</button>
+</form>
+<a href="{% url 'recipe_list' %}">Назад к списку рецептов</a>
+
+</body>
+</html>
