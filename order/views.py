@@ -1,24 +1,36 @@
+from re import I
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import generic
 from . import models, forms
 from .forms import OrderForm
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
+from django.core.cache import cache
 
-#весь список
+# списка заказов 
+@method_decorator(cache_page(60*15), name='dispatch')
 class OrderListView(generic.ListView):
     template_name = 'order/order_list.html'
     context_object_name = 'order_lst'
     model = models.OrderModel
 
     def get_queryset(self):
-        return self.model.objects.all().order_by('-id')
+        orders = cache.get('orders')
+        if not orders:
+            orders = self.model.objects.all().order_by('-id')
+            cache.set('orders', orders, 60*15)
+        return orders
 
-# def order_list(request):
-#     if request.method == "GET":
-#         query = models.OrderModel.objects.all()  # Используем модель OrderModel, а не форму OrderForm
-#         context = {'order_lst': query}
-#         return render(request, 'order/order_list.html', context)
 
-#добвление
+#  деталей заказа
+@method_decorator(cache_page(60*10), name='dispatch')
+class OrderDetailView(generic.DetailView):
+    model = models.OrderModel
+    template_name = 'order/order_detail.html'
+    context_object_name = 'order'
+
+
+# создания заказа
 class CreateOrderView(generic.CreateView):
     template_name = 'order/create_order.html'
 
@@ -30,35 +42,21 @@ class CreateOrderView(generic.CreateView):
         form = OrderForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            cache.delete('orders')  
             return redirect('order_lst')
         return render(request, self.template_name, {'form': form})
 
-# def create_order(request):
-#     if request.method == "POST":
-#         form = OrderForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('order_lst')
-#     else:
-#         form = OrderForm()
-#
-#     return render(request, template_name='order/create_order.html',
-#                   context={'form': form})
-# удаления
+
+# удалении заказа
 class DeleteOrderView(generic.DetailView):
     def get(self, request, id):
         order = get_object_or_404(models.OrderModel, id=id)
         order.delete()
+        cache.delete('orders')  
         return redirect('order_lst')
 
 
-# def delete_order(request, id):
-#     order_id = get_object_or_404(models.OrderModel, id=id)
-#     order_id.delete()
-#     return redirect('order_lst')
-
-
-#изменение
+# обновлении заказа
 class UpdateOrderView(generic.UpdateView):
     def get(self, request, id):
         order = get_object_or_404(models.OrderModel, id=id)
@@ -70,21 +68,7 @@ class UpdateOrderView(generic.UpdateView):
         form = forms.OrderForm(request.POST, instance=order)
         if form.is_valid():
             form.save()
+            cache.delete('orders') 
+            cache.delete(f'order_{id}')  
             return redirect('order_lst')
         return render(request, 'order/update_order.html', {'form': form, 'order_id': order})
-
-
-# def update_order(request, id):
-#     order_id = get_object_or_404(models.OrderModel, id=id)
-#     if request.method == "POST":
-#         form = forms.OrderForm(request.POST,instance=order_id)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('order_lst')
-#     else:
-#         form = forms.OrderForm(instance=order_id)
-#         return render(request, template_name='order/update_order.html',
-#                       context={
-#                           'form': form,
-#                            'order_id': order_id
-#                       })
